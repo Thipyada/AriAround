@@ -1,0 +1,79 @@
+[
+  {
+    "feature": "รายงาน",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "สร้างแุคมเปญ",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "จัดการสมาชิก",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "จัดการ Organization",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "จัดการ User",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "Earn rules",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "Community Program",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "จัดการร้านค้า",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "จัดการ Coin",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "รายการแลกเปลี่ยน",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  },
+  {
+    "feature": "Role and Permission",
+    "show": true,
+    "viewOnly": false,
+    "eud": false,
+    "adminId": ""
+  }
+]

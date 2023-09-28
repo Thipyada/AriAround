@@ -17,21 +17,20 @@ model User {
 }
 
 model Admin {
-  id             String        @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt      DateTime      @default(now())
-  name           String        @unique
-  role           Role          @default(ADMIN)
-  profile        AdminProfile?
-  permissions    Permission[]
-  adminProfileId String        @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime     @default(now())
+  name        String       @unique
+  role        Role         @default(ADMIN)
+  permissions Permission[]
+  profile     AdminRole?
 }
 
-model AdminProfile {
+model AdminRole {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime @default(now())
   profilePic String?
   phone      String?
-  email      String
+  email      String   @unique
   admin      Admin    @relation(fields: [adminId], references: [id])
   adminId    String   @unique @db.ObjectId
 }
