@@ -3,6 +3,8 @@ import { json, urlencoded } from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
 
+import permissionRouter from './routes/permission'
+
 const PORT = 8080
 
 const app: Application = express()
@@ -18,6 +20,7 @@ app.use(cors())
 //middleware
 
 //Routes
+app.get('/permission', permissionRouter)
 
 // run yarn start
 app.get('/test', (req: Request, res: Response) => {
