@@ -20,25 +20,16 @@ model Admin {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime     @default(now())
   name        String       @unique
+  email       String       @unique
+  profilePic  String?
+  phone       String?
   permissions Permission[]
-  profile     AdminRole?
-}
-
-model AdminRole {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt  DateTime @default(now())
-  profilePic String?
-  phone      String?
-  email      String   @unique
-  admin      Admin    @relation(fields: [adminId], references: [id])
-  adminId    String   @unique @db.ObjectId
 }
 
 type Permission {
-  feature  String
-  show     Boolean
-  viewOnly Boolean
-  eud      Boolean
+  feature           String
+  show              Boolean
+  permissionFeature PermissionFeature
 }
 
 model Organization {
@@ -56,4 +47,9 @@ enum Status {
   ACTIVE
   PENDING
   REJECTED
+}
+
+enum PermissionFeature {
+  VIEW
+  EDIT
 }

@@ -5,7 +5,7 @@ import morgan from 'morgan'
 
 import userRouter from './routes/user'
 import organizationRouter from './routes/organization'
-import permissionRouter from './routes/permission'
+import adminRouter from './routes/admin'
 
 const PORT = 8080
 
@@ -24,7 +24,7 @@ app.use(cors())
 //Routes
 app.use('/api/user', userRouter)
 app.use('/api/organization', organizationRouter)
-app.use('/api/permission', permissionRouter)
+app.use('/api/admin', adminRouter)
 
 // run yarn start
 app.get('/test', (req: Request, res: Response) => {

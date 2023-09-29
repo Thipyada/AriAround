@@ -1,0 +1,66 @@
+[
+  {
+    "name": "Admin",
+    "profilePic": "url",
+    "phone": "081-xxx-xxxx",
+    "email": "email",
+    "adminId": "adminId",
+    "permissions": [
+      {
+        "feature": "รายงาน",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "สร้างแุคมเปญ",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "จัดการสมาชิก",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "จัดการ Organization",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "จัดการ User",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "Earn rules",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "Community Program",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "จัดการร้านค้า",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "จัดการ Coin",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "รายการแลกเปลี่ยน",
+        "show": true,
+        "permissionFeature": "VIEW"
+      },
+      {
+        "feature": "Role and Permission",
+        "show": true,
+        "permissionFeature": "VIEW"
+      }
+    ]
+  }
+]
