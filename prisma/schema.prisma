@@ -11,16 +11,15 @@ model User {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
   createdAt      DateTime     @default(now())
   name           String       @unique
-  role           Role         @default(USER)
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @db.ObjectId
+  status         Status       @default(PENDING)
 }
 
 model Admin {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   createdAt   DateTime     @default(now())
   name        String       @unique
-  role        Role         @default(ADMIN)
   permissions Permission[]
   profile     AdminRole?
 }
@@ -35,6 +34,13 @@ model AdminRole {
   adminId    String   @unique @db.ObjectId
 }
 
+type Permission {
+  feature  String
+  show     Boolean
+  viewOnly Boolean
+  eud      Boolean
+}
+
 model Organization {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
@@ -46,24 +52,8 @@ model Organization {
   users     User[]
 }
 
-model Permission {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  feature   String   @unique
-  show      Boolean //Show/Hide
-  viewOnly  Boolean
-  eud       Boolean //Edit/Updata/Delete
-  Admin     Admin?   @relation(fields: [adminId], references: [id])
-  adminId   String?  @db.ObjectId
-}
-
 enum Status {
-  APPROVED //meaning the organization is approved to use the app = ACTIVE
+  ACTIVE
   PENDING
   REJECTED
-}
-
-enum Role {
-  ADMIN
-  USER
 }
