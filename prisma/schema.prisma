@@ -43,6 +43,50 @@ model Organization {
   users     User[]
 }
 
+model Earnrule {
+  id        String            @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime          @default(now())
+  name      String            @unique
+  type      String
+  period    Period            @default(ALL_TIME) //if custom, then add start and end date
+  startDate String
+  endDate   String
+  picture   String //url
+  frequency RightperFrequency
+  setting   ResultSetting
+  active    Boolean           @default(true)
+}
+
+type ResultSetting {
+  resultType ResultType
+  value      ValueperCoin
+}
+
+type ValueperCoin {
+  amount Int
+  coin   Int
+}
+
+type RightperFrequency {
+  right     Int
+  frequency Frequency
+}
+
+enum ResultType {
+  FIXED //fixed amount
+  BUY_AMOUNT //increase by buy amount
+}
+
+enum Frequency {
+  DAILY
+  MONTHLY
+}
+
+enum Period {
+  ALL_TIME
+  CUSTOM
+}
+
 enum Status {
   ACTIVE
   PENDING

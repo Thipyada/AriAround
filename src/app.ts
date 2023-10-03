@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import userRouter from './routes/user'
 import organizationRouter from './routes/organization'
 import adminRouter from './routes/admin'
+import earnRuleRouter from './routes/earnrule'
 
 const PORT = 8080
 
@@ -22,6 +23,7 @@ app.use(cors())
 //middleware
 
 //Routes
+app.use('/api/earnrule', earnRuleRouter)
 app.use('/api/user', userRouter)
 app.use('/api/organization', organizationRouter)
 app.use('/api/admin', adminRouter)
