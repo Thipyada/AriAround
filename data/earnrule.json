@@ -3,6 +3,8 @@
     "name": "rule",
     "type": "person",
     "period": "ALL_TIME",
+    "startDate": "2019-01-01",
+    "endDate": "2019-12-31",
     "picture": "picture",
     "frequency": {
       "right": 1,

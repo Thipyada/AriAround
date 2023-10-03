@@ -15,10 +15,7 @@ const adminSchema = z.object({
     z.object({
       feature: z.string(),
       show: z.boolean(),
-      permissionFeature: z.object({
-        feature: z.string(),
-        show: z.boolean()
-      })
+      permissionFeature: z.string()
     })
   )
 })
