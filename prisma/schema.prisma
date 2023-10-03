@@ -49,8 +49,8 @@ model Earnrule {
   name      String            @unique
   type      String
   period    Period            @default(ALL_TIME) //if custom, then add start and end date
-  startDate String
-  endDate   String
+  startDate String?
+  endDate   String?
   picture   String //url
   frequency RightperFrequency
   setting   ResultSetting
