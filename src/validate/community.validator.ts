@@ -8,8 +8,7 @@ const communitySchema = z.object({
   updated: z.string(),
   active: z.boolean(),
   description: z.string().optional(),
-  owner: z.string(),
-  shop: z.string().array()
+  owner: z.string()
 })
 
 export default function ValidateCommunity(
