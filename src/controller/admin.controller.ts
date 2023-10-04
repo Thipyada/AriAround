@@ -1,43 +1,9 @@
 import { PrismaClient } from '@prisma/client'
-import { NextFunction, Request, Response } from 'express'
-import { Router } from 'express'
-import { z } from 'zod'
+import { Request, Response } from 'express'
 
-const router = Router()
 const prisma = new PrismaClient()
 
-const adminSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  profilePic: z.string().optional(),
-  phone: z.string().optional(),
-  permissions: z.array(
-    z.object({
-      feature: z.string(),
-      show: z.boolean(),
-      permissionFeature: z.string()
-    })
-  )
-})
-
-function ValidateAdmin(req: Request, res: Response, next: NextFunction) {
-  try {
-    if (Array.isArray(req.body)) {
-      req.body.forEach((admin) => {
-        adminSchema.parse(admin)
-      })
-    } else {
-      adminSchema.parse(req.body)
-    }
-    next()
-  } catch (error) {
-    res.status(400).json({ message: 'error', error })
-    return
-  }
-}
-
-// GET all + query
-router.get('/', async (req: Request, res: Response) => {
+export async function getAllAdmins(req: Request, res: Response) {
   try {
     const { name, email } = req.query
     const where: Record<string, unknown> = {}
@@ -68,10 +34,9 @@ router.get('/', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// GET by id
-router.get('/:id', async (req: Request, res: Response) => {
+export async function getAdminById(req: Request, res: Response) {
   try {
     const admin = await prisma.admin.findUnique({
       where: {
@@ -86,10 +51,9 @@ router.get('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// POST
-router.post('/', ValidateAdmin, async (req: Request, res: Response) => {
+export async function createAdmin(req: Request, res: Response) {
   try {
     if (Array.isArray(req.body)) {
       await prisma.admin.createMany({
@@ -107,10 +71,9 @@ router.post('/', ValidateAdmin, async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// PUT
-router.put('/:id', ValidateAdmin, async (req: Request, res: Response) => {
+export async function updateAdmin(req: Request, res: Response) {
   try {
     const admin = await prisma.admin.findUnique({
       where: {
@@ -133,10 +96,9 @@ router.put('/:id', ValidateAdmin, async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// DELETE
-router.delete('/:id', async (req: Request, res: Response) => {
+export async function deleteAdmin(req: Request, res: Response) {
   try {
     const admin = await prisma.admin.findUnique({
       where: {
@@ -156,6 +118,4 @@ router.delete('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
-
-export default router
+}

@@ -1,50 +1,9 @@
-import { Router } from 'express'
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
-import { z } from 'zod'
 
-const router = Router()
 const prisma = new PrismaClient()
 
-const earnRuleSchema = z.object({
-  name: z.string(),
-  type: z.string(),
-  period: z.string(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
-  picture: z.string(),
-  frequency: z.object({
-    right: z.number(),
-    frequency: z.string()
-  }),
-  setting: z.object({
-    resultType: z.string(),
-    value: z.object({
-      amount: z.number(),
-      coin: z.number()
-    })
-  }),
-  active: z.boolean()
-})
-
-function ValidateEarnRule(req: Request, res: Response, next: NextFunction) {
-  try {
-    if (Array.isArray(req.body)) {
-      req.body.forEach((earnRule) => {
-        earnRuleSchema.parse(earnRule)
-      })
-    } else {
-      earnRuleSchema.parse(req.body)
-    }
-    next()
-  } catch (error) {
-    res.status(400).json({ message: 'error', error })
-    return
-  }
-}
-
-// GET all + query by type + name + active
-router.get('/', async (req: Request, res: Response) => {
+export async function getAllEarnrules(req: Request, res: Response) {
   try {
     const { name, type, active } = req.query
     const where: Record<string, unknown> = {}
@@ -78,10 +37,9 @@ router.get('/', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// GET by id
-router.get('/:id', async (req: Request, res: Response) => {
+export async function getEarnruleById(req: Request, res: Response) {
   try {
     const { id } = req.params
     const earnRule = await prisma.earnrule.findUnique({
@@ -97,11 +55,9 @@ router.get('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// POST
-router.post('/', ValidateEarnRule, async (req: Request, res: Response) => {
-  console.log(req.body)
+export async function createEarnrule(req: Request, res: Response) {
   try {
     if (Array.isArray(req.body)) {
       await prisma.earnrule.createMany({
@@ -120,10 +76,9 @@ router.post('/', ValidateEarnRule, async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// PUT
-router.put('/:id', ValidateEarnRule, async (req: Request, res: Response) => {
+export async function updateEarnrule(req: Request, res: Response) {
   try {
     const { id } = req.params
     const earnRule = await prisma.earnrule.findUnique({
@@ -147,10 +102,9 @@ router.put('/:id', ValidateEarnRule, async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// DELETE
-router.delete('/:id', async (req: Request, res: Response) => {
+export async function deleteEarnrule(req: Request, res: Response) {
   try {
     const { id } = req.params
     const earnRule = await prisma.earnrule.findUnique({
@@ -171,6 +125,4 @@ router.delete('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
-
-export default router
+}

@@ -1,22 +1,18 @@
 import { PrismaClient } from '@prisma/client'
-import { Request, Response, NextFunction } from 'express'
-import { Router } from 'express'
+import { Request, Response } from 'express'
 
-const router = Router()
 const prisma = new PrismaClient()
 
-// GET all
-router.get('/', async (req: Request, res: Response) => {
+export async function getAllUsers(req: Request, res: Response) {
   try {
     const users = await prisma.user.findMany()
     res.status(200).json({ data: users })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// GET by id
-router.get('/:id', async (req: Request, res: Response) => {
+export async function getUserById(req: Request, res: Response) {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -31,11 +27,9 @@ router.get('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// POST
-router.post('/', async (req: Request, res: Response) => {
-  console.log('body', req.body)
+export async function createUser(req: Request, res: Response) {
   try {
     if (Array.isArray(req.body)) {
       await prisma.user.createMany({
@@ -54,10 +48,9 @@ router.post('/', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// PUT
-router.put('/:id', async (req: Request, res: Response) => {
+export async function updateUser(req: Request, res: Response) {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -80,10 +73,9 @@ router.put('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
+}
 
-// DELETE
-router.delete('/:id', async (req: Request, res: Response) => {
+export async function deleteUser(req: Request, res: Response) {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -103,6 +95,4 @@ router.delete('/:id', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
-})
-
-export default router
+}
