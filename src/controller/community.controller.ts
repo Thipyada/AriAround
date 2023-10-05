@@ -24,7 +24,10 @@ export async function getAllCommunities(req: Request, res: Response) {
     }
 
     const communities = await prisma.community.findMany({
-      where: where
+      where: where,
+      include: {
+        code: true
+      }
     })
 
     if (!communities) {
@@ -42,6 +45,9 @@ export async function getCommunityById(req: Request, res: Response) {
     const community = await prisma.community.findUnique({
       where: {
         id: req.params.id
+      },
+      include: {
+        code: true
       }
     })
 
@@ -98,6 +104,62 @@ export async function updateCommunity(req: Request, res: Response) {
       }
     })
     res.status(200).json({ message: 'Community Updated' })
+  } catch (error) {
+    res.status(400).json({ message: 'error', error })
+  }
+}
+
+export async function addCommunityEarnrule(req: Request, res: Response) {
+  try {
+    console.log('body', req.body)
+
+    const community = await prisma.community.findUnique({
+      where: {
+        id: req.params.id
+      }
+    })
+
+    //array of earnruleId
+    const earnruleIds = req.body.map((item: any) => item.earnruleId)
+
+    //check if earnrule exist and if not return 404
+    const earnrules = await prisma.earnrule.findMany({
+      where: {
+        id: {
+          in: earnruleIds
+        }
+      }
+    })
+
+    //check if earnrule is already exist in communityEarnrule if not return 404
+    const communityEarnrules = await prisma.communityEarnrule.findMany({
+      where: {
+        communityId: req.params.id,
+        earnruleId: {
+          in: earnruleIds
+        }
+      }
+    })
+    if (!community) {
+      res.status(404).json({ message: 'Not found' })
+      return
+    }
+
+    if (!earnrules) {
+      res.status(404).json({ message: 'Earnrules Not found' })
+      return
+    }
+
+    if (communityEarnrules.length > 0) {
+      res.status(400).json({ message: 'Earnrule already exist' })
+      return
+    }
+
+    await prisma.communityEarnrule.createMany({
+      data: req.body
+    })
+
+    res.status(200).json({ message: 'Community Earnrule Added' })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }

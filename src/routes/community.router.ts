@@ -7,6 +7,7 @@ const router = Router()
 router.get('/', communityController.getAllCommunities)
 router.get('/:id', communityController.getCommunityById)
 router.post('/', validate, communityController.createCommunity)
+router.post('/earnrule/:id', communityController.addCommunityEarnrule)
 router.put('/:id', validate, communityController.updateCommunity)
 router.delete('/:id', communityController.deleteCommunity)
 
