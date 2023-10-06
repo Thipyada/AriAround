@@ -7,9 +7,6 @@
 
 [
   {
-    "earnruleId": "651b62fa9598e954c1d4cb12",
-  },
-  {
-    "earnruleId": "5f6f3b9b0f1090ea2cbc06b3",
+    "earnruleIds": ["651b62fa9598e954c1d4cb12","651b63119598e954c1d4cb13"]
   }
 ]

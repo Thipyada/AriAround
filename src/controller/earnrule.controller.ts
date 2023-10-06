@@ -27,7 +27,10 @@ export async function getAllEarnrules(req: Request, res: Response) {
     }
 
     const earnRules = await prisma.earnrule.findMany({
-      where: where
+      where: where,
+      include: {
+        communityEarnrule: true
+      }
     })
     if (!earnRules) {
       res.status(404).json({ message: 'error', error: 'earnRules not found' })

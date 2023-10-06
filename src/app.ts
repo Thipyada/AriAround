@@ -8,6 +8,7 @@ import organizationRouter from './routes/organization.router'
 import adminRouter from './routes/admin.router'
 import earnRuleRouter from './routes/earnrule.router'
 import communityRouter from './routes/community.router'
+import shopRouter from './routes/shop.router'
 
 const PORT = 8080
 
@@ -24,6 +25,7 @@ app.use(cors())
 //middleware
 
 //Routes
+app.use('/api/shop', shopRouter)
 app.use('/api/community', communityRouter)
 app.use('/api/earnrule', earnRuleRouter)
 app.use('/api/user', userRouter)

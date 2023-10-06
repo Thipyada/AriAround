@@ -26,7 +26,11 @@ export async function getAllCommunities(req: Request, res: Response) {
     const communities = await prisma.community.findMany({
       where: where,
       include: {
-        code: true
+        code: {
+          include: {
+            earnrule: true
+          }
+        }
       }
     })
 
@@ -111,8 +115,6 @@ export async function updateCommunity(req: Request, res: Response) {
 
 export async function addCommunityEarnrule(req: Request, res: Response) {
   try {
-    console.log('body', req.body)
-
     const community = await prisma.community.findUnique({
       where: {
         id: req.params.id
@@ -141,7 +143,7 @@ export async function addCommunityEarnrule(req: Request, res: Response) {
       }
     })
     if (!community) {
-      res.status(404).json({ message: 'Not found' })
+      res.status(404).json({ message: 'Community Not found' })
       return
     }
 
@@ -151,7 +153,9 @@ export async function addCommunityEarnrule(req: Request, res: Response) {
     }
 
     if (communityEarnrules.length > 0) {
-      res.status(400).json({ message: 'Earnrule already exist' })
+      res
+        .status(400)
+        .json({ message: 'This earnrule already exist in this community' })
       return
     }
 

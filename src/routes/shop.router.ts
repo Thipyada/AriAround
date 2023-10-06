@@ -7,8 +7,8 @@ const router = Router()
 router.get('/', shopController.getAllShops)
 router.get('/:id', shopController.getShopById)
 router.post('/', validate, shopController.createShop)
-router.post('/addearnrule/:id', shopController.addEarnruleToShop)
 router.put('/:id', validate, shopController.updateShop)
+router.put('/earnrule/:id', shopController.addEarnruleToShop)
 router.delete('/:id', shopController.deleteShop)
 
 export default router

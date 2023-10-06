@@ -5,7 +5,11 @@ const prisma = new PrismaClient()
 
 export async function getAllUsers(req: Request, res: Response) {
   try {
-    const users = await prisma.user.findMany()
+    const users = await prisma.user.findMany({
+      include: {
+        earnrule: true
+      }
+    })
     res.status(200).json({ data: users })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
@@ -70,6 +74,48 @@ export async function updateUser(req: Request, res: Response) {
       }
     })
     res.status(200).json({ message: 'user Updated' })
+  } catch (error) {
+    res.status(400).json({ message: 'error', error })
+  }
+}
+
+export async function userAddEarnrule(req: Request, res: Response) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.params.id
+      }
+    })
+
+    const earnrule = await prisma.earnrule.findMany({
+      where: {
+        id: {
+          in: req.body.earnruleIds
+        }
+      }
+    })
+
+    if (!user) {
+      res.status(404).json({ message: 'User is not found' })
+      return
+    }
+
+    if (earnrule.length !== req.body.earnruleIds.length) {
+      res.status(404).json({ message: 'Earn Rule Not Found' })
+      return
+    }
+
+    await prisma.user.update({
+      where: {
+        id: req.params.id
+      },
+      data: {
+        earnruleIds: {
+          push: req.body.earnruleIds
+        }
+      }
+    })
+    res.status(200).json({ message: 'Earn rule added to User' })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }

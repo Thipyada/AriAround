@@ -8,6 +8,7 @@ router.get('/', userController.getAllUsers)
 router.get('/:id', userController.getUserById)
 router.post('/', validate, userController.createUser)
 router.put('/:id', validate, userController.updateUser)
+router.put('/earnrule/:id', userController.userAddEarnrule)
 router.delete('/:id', userController.deleteUser)
 
 export default router

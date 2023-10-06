@@ -15,7 +15,10 @@ export async function getAllShops(req: Request, res: Response) {
       where.name = shopName
     }
     const shops = await prisma.shop.findMany({
-      where: where
+      where: where,
+      include: {
+        earnrule: true
+      }
     })
 
     if (!shops) {
@@ -98,32 +101,53 @@ export async function addEarnruleToShop(req: Request, res: Response) {
         id: req.params.id
       }
     })
+
+    //Check if earnrule exist in shop
+    const earnruleInShop = await prisma.shop.findMany({
+      where: {
+        id: req.params.id,
+        earnruleIds: {
+          hasSome: req.body.earnruleIds
+        }
+      }
+    })
+
+    //check if earnrule exist in community
+    const earnruleInCommunity = await prisma.communityEarnrule.findMany({
+      where: {
+        communityId: shop?.communityId,
+        earnruleId: {
+          in: req.body.earnruleIds
+        }
+      }
+    })
+
     if (!shop) {
       res.status(404).json({ message: 'Not Found' })
       return
     }
 
-    const earnrule = await prisma.shopEarnrule.findMany({
-      where: {
-        shopId: req.params.id,
-        earnruleId: {
-          in: req.body.earnruleId
-        }
-      }
-    })
+    if (earnruleInCommunity.length !== req.body.earnruleIds.length) {
+      res.status(400).json({ message: 'Earnrule not exist in community' })
+      return
+    }
 
-    if (earnrule.length > 0) {
+    if (earnruleInShop.length > 0) {
       res.status(400).json({ message: 'Already Exist' })
       return
     }
 
-    await prisma.shopEarnrule.createMany({
-      data: req.body.earnruleId.map((earnruleId: string) => ({
-        shopId: req.params.id,
-        earnruleId: earnruleId
-      }))
+    await prisma.shop.update({
+      where: {
+        id: req.params.id
+      },
+      data: {
+        earnruleIds: {
+          push: req.body.earnruleIds
+        }
+      }
     })
-    res.status(200).json({ message: 'earnrules added to shop' })
+    res.status(200).json({ message: 'Earnrule added to Shop' })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
