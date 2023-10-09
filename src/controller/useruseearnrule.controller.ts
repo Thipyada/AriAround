@@ -34,6 +34,13 @@ export async function userUseEarnRule(req: Request, res: Response) {
       return
     }
 
+    const check = shop.earnruleIds?.includes(EarnRule?.id as string)
+
+    if (!check) {
+      res.status(400).json({ message: 'earnrule not found in shop' })
+      return
+    }
+
     let userUsedEarnrule: Prisma.JsonObject =
       (EarnRule.userUseEarnrule as Prisma.JsonObject) || {}
 
