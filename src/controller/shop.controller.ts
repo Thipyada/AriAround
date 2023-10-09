@@ -113,11 +113,11 @@ export async function addEarnruleToShop(req: Request, res: Response) {
     })
 
     //check if earnrule exist in community
-    const earnruleInCommunity = await prisma.communityEarnrule.findMany({
+    const earnruleInCommunity = await prisma.community.findMany({
       where: {
-        communityId: shop?.communityId,
-        earnruleId: {
-          in: req.body.earnruleIds
+        id: shop?.communityId,
+        earnruleIds: {
+          hasSome: req.body.earnruleIds
         }
       }
     })

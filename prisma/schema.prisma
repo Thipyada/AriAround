@@ -8,14 +8,15 @@ datasource db {
 }
 
 model User {
-  id             String       @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt      DateTime     @default(now())
-  name           String       @unique
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String       @db.ObjectId
-  status         Status       @default(PENDING)
-  earnrule       Earnrule[]   @relation(fields: [earnruleIds], references: [id])
-  earnruleIds    String[]     @db.ObjectId
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt      DateTime      @default(now())
+  name           String        @unique
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  organizationId String        @db.ObjectId
+  status         Status        @default(PENDING)
+  earnrule       Earnrule[]    @relation(fields: [earnruleIds], references: [id])
+  earnruleIds    String[]      @db.ObjectId
+  transaction    transaction[]
 }
 
 model Admin {
@@ -46,55 +47,65 @@ model Organization {
 }
 
 model Earnrule {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt         DateTime            @default(now())
-  name              String              @unique
-  type              String
-  period            Period              @default(ALL_TIME) //if custom, then add start and end date
-  startDate         String?
-  endDate           String?
-  picture           String //url
-  frequency         RightperFrequency
-  setting           ResultSetting
-  active            Boolean             @default(true)
-  communityEarnrule communityEarnrule[]
-  Shops             Shop[]              @relation(fields: [shopIds], references: [id])
-  shopIds           String[]            @db.ObjectId
-  User              User[]              @relation(fields: [userId], references: [id])
-  userId            String[]            @db.ObjectId
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt       DateTime          @default(now())
+  name            String            @unique
+  type            String
+  period          Period            @default(ALL_TIME) //if custom, then add start and end date
+  startDate       String?
+  endDate         String?
+  picture         String //url
+  frequency       RightperFrequency
+  setting         ResultSetting
+  active          Boolean           @default(true)
+  Community       Community[]       @relation(fields: [communityIds], references: [id])
+  communityIds    String[]          @db.ObjectId
+  Shops           Shop[]            @relation(fields: [shopIds], references: [id])
+  shopIds         String[]          @db.ObjectId
+  User            User[]            @relation(fields: [userId], references: [id])
+  userId          String[]          @db.ObjectId
+  transaction     transaction[]
+  userUseEarnrule Json?
+}
+
+model transaction {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime  @default(now())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String    @db.ObjectId
+  earnrule    Earnrule  @relation(fields: [earnruleId], references: [id])
+  earnruleId  String    @db.ObjectId
+  shop        Shop      @relation(fields: [shopId], references: [id])
+  shopId      String    @db.ObjectId
+  community   Community @relation(fields: [communityId], references: [id])
+  communityId String    @db.ObjectId
 }
 
 model Community {
-  id          String              @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime            @default(now())
-  thaiName    String              @unique
-  englishName String              @unique
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime      @default(now())
+  thaiName    String        @unique
+  englishName String        @unique
   founded     String
   updated     String
-  active      Boolean             @default(true)
+  active      Boolean       @default(true)
   description String?
-  owner       String //who? Organization?, User?, Admin?
+  owner       String
   shop        Shop[]
-  code        communityEarnrule[]
-}
-
-model communityEarnrule {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime  @default(now())
-  community   Community @relation(fields: [communityId], references: [id])
-  communityId String    @db.ObjectId
-  earnrule    Earnrule  @relation(fields: [earnruleId], references: [id])
-  earnruleId  String    @db.ObjectId
+  earnrule    Earnrule[]    @relation(fields: [earnruleIds], references: [id])
+  earnruleIds String[]      @db.ObjectId
+  transaction transaction[]
 }
 
 model Shop {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime   @default(now())
-  name        String     @unique
-  community   Community  @relation(fields: [communityId], references: [id])
-  communityId String     @db.ObjectId
-  earnrule    Earnrule[] @relation(fields: [earnruleIds], references: [id])
-  earnruleIds String[]   @db.ObjectId
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime      @default(now())
+  name        String        @unique
+  community   Community     @relation(fields: [communityId], references: [id])
+  communityId String        @db.ObjectId
+  earnrule    Earnrule[]    @relation(fields: [earnruleIds], references: [id])
+  earnruleIds String[]      @db.ObjectId
+  transaction transaction[]
 }
 
 type ResultSetting {

@@ -12,11 +12,9 @@
 
 [
   {
-    "communityId": "651ccd400f1090ea2cbc06b2",
-    "earnruleId":"651b62fa9598e954c1d4cb12",
-  },
-  {
-    "communityId": "651ccd400f1090ea2cbc06b2",
-    "earnruleId": "651b63119598e954c1d4cb13",
-  }
+    "earnruleIds": [
+        "651b62fa9598e954c1d4cb12",
+        "651b63119598e954c1d4cb13"
+    ]
+}
 ]

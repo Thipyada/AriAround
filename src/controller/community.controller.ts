@@ -26,11 +26,7 @@ export async function getAllCommunities(req: Request, res: Response) {
     const communities = await prisma.community.findMany({
       where: where,
       include: {
-        code: {
-          include: {
-            earnrule: true
-          }
-        }
+        earnrule: true
       }
     })
 
@@ -49,9 +45,6 @@ export async function getCommunityById(req: Request, res: Response) {
     const community = await prisma.community.findUnique({
       where: {
         id: req.params.id
-      },
-      include: {
-        code: true
       }
     })
 
@@ -121,46 +114,49 @@ export async function addCommunityEarnrule(req: Request, res: Response) {
       }
     })
 
-    //array of earnruleId
-    const earnruleIds = req.body.map((item: any) => item.earnruleId)
-
-    //check if earnrule exist and if not return 404
-    const earnrules = await prisma.earnrule.findMany({
+    //Check if earnrule exist in earnrule
+    const earnrule = await prisma.earnrule.findMany({
       where: {
         id: {
-          in: earnruleIds
+          in: req.body.earnruleIds
         }
       }
     })
 
-    //check if earnrule is already exist in communityEarnrule if not return 404
-    const communityEarnrules = await prisma.communityEarnrule.findMany({
+    //Check if earnrule exist in community
+    const earnruleInCommunity = await prisma.community.findMany({
       where: {
-        communityId: req.params.id,
-        earnruleId: {
-          in: earnruleIds
+        id: req.params.id,
+        earnruleIds: {
+          hasSome: req.body.earnruleIds
         }
       }
     })
+
     if (!community) {
-      res.status(404).json({ message: 'Community Not found' })
+      res.status(404).json({ message: 'Community Not Found' })
       return
     }
 
-    if (!earnrules) {
-      res.status(404).json({ message: 'Earnrules Not found' })
+    if (earnrule.length !== req.body.earnruleIds.length) {
+      res.status(404).json({ message: 'Earnrule nit exist' })
       return
     }
 
-    if (communityEarnrules.length > 0) {
-      res
-        .status(400)
-        .json({ message: 'This earnrule already exist in this community' })
+    if (earnruleInCommunity.length !== 0) {
+      res.status(404).json({ message: 'Earnrule already exist in community' })
       return
     }
 
-    await prisma.communityEarnrule.createMany({
-      data: req.body
+    await prisma.community.update({
+      where: {
+        id: req.params.id
+      },
+      data: {
+        earnruleIds: {
+          push: req.body.earnruleIds
+        }
+      }
     })
 
     res.status(200).json({ message: 'Community Earnrule Added' })
