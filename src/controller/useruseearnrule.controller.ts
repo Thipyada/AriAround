@@ -26,6 +26,9 @@ export async function userUseEarnRule(req: Request, res: Response) {
         id: earnruleId
       }
     })
+
+    // const frequency = EarnRule?.frequency.frequency as string
+
     if (!EarnRule) {
       res.status(400).json({ message: 'earnrule not found' })
       return
@@ -85,7 +88,12 @@ export async function userUseEarnRule(req: Request, res: Response) {
         user &&
         typeof user[id as string] === 'number'
       ) {
-        user[id as string] = (user[id as string] as number) + 1
+        if (user[id as string] !== 10) {
+          user[id as string] = (user[id as string] as number) + 1
+        } else {
+          res.status(400).json({ message: 'user use earnrule at limit' })
+          return
+        }
       } else {
         user[id as string] = 1
       }
@@ -105,7 +113,6 @@ export async function userUseEarnRule(req: Request, res: Response) {
         userUseEarnrule: userUsedEarnrule
       }
     })
-
     res.status(200).json({ message: 'updated user use earnrule' })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
