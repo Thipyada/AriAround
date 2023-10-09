@@ -13,7 +13,7 @@ model User {
   name           String        @unique
   organization   Organization  @relation(fields: [organizationId], references: [id])
   organizationId String        @db.ObjectId
-  status         Status        @default(PENDING)
+  status         Status?       @default(PENDING)
   earnrule       Earnrule[]    @relation(fields: [earnruleIds], references: [id])
   earnruleIds    String[]      @db.ObjectId
   transaction    transaction[]

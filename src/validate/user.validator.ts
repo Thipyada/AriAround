@@ -4,7 +4,7 @@ import { z } from 'zod'
 const userSchema = z.object({
   name: z.string(),
   organizationId: z.string(),
-  status: z.string()
+  status: z.string().optional()
 })
 
 export default function ValidateUser(

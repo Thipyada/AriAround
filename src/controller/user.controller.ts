@@ -87,6 +87,11 @@ export async function userAddEarnrule(req: Request, res: Response) {
       }
     })
 
+    const userEarnrules = user?.earnruleIds
+    const checkEarnrule = req.body.earnruleIds.some((val: string) =>
+      userEarnrules?.includes(val)
+    )
+
     const earnrule = await prisma.earnrule.findMany({
       where: {
         id: {
@@ -102,6 +107,11 @@ export async function userAddEarnrule(req: Request, res: Response) {
 
     if (earnrule.length !== req.body.earnruleIds.length) {
       res.status(404).json({ message: 'Earn Rule Not Found' })
+      return
+    }
+
+    if (checkEarnrule) {
+      res.status(404).json({ message: 'Earn Rule Already Exist' })
       return
     }
 

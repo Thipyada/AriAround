@@ -124,14 +124,10 @@ export async function addCommunityEarnrule(req: Request, res: Response) {
     })
 
     //Check if earnrule exist in community
-    const earnruleInCommunity = await prisma.community.findMany({
-      where: {
-        id: req.params.id,
-        earnruleIds: {
-          hasSome: req.body.earnruleIds
-        }
-      }
-    })
+    const earnruleInCommunity = community?.earnruleIds
+    const checkEarnrule = req.body.earnruleIds.some((val: string) =>
+      earnruleInCommunity?.includes(val)
+    )
 
     if (!community) {
       res.status(404).json({ message: 'Community Not Found' })
@@ -143,8 +139,8 @@ export async function addCommunityEarnrule(req: Request, res: Response) {
       return
     }
 
-    if (earnruleInCommunity.length !== 0) {
-      res.status(404).json({ message: 'Earnrule already exist in community' })
+    if (checkEarnrule) {
+      res.status(400).json({ message: 'Earnrule already exist' })
       return
     }
 

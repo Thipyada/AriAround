@@ -96,30 +96,29 @@ export async function updateShop(req: Request, res: Response) {
 
 export async function addEarnruleToShop(req: Request, res: Response) {
   try {
+    const { earnruleIds } = req.body
     const shop = await prisma.shop.findUnique({
       where: {
         id: req.params.id
       }
     })
 
-    //Check if earnrule exist in shop
-    const earnruleInShop = await prisma.shop.findMany({
-      where: {
-        id: req.params.id,
-        earnruleIds: {
-          hasSome: req.body.earnruleIds
-        }
-      }
+    const earnruleInShop = shop?.earnruleIds
+    //check if some element in earnruleInshop match with any earnruleIds
+    const checkShop = earnruleIds.some((val: string) => {
+      return earnruleInShop?.includes(val)
     })
 
     //check if earnrule exist in community
-    const earnruleInCommunity = await prisma.community.findMany({
+    const community = await prisma.community.findUnique({
       where: {
-        id: shop?.communityId,
-        earnruleIds: {
-          hasSome: req.body.earnruleIds
-        }
+        id: shop?.communityId
       }
+    })
+    const earnruleInCommunity = community?.earnruleIds
+    //check if some element in earnruleInCommunity all match with earnruleIds
+    const checkCommunity = earnruleIds.every((val: string) => {
+      return earnruleInCommunity?.includes(val)
     })
 
     if (!shop) {
@@ -127,13 +126,13 @@ export async function addEarnruleToShop(req: Request, res: Response) {
       return
     }
 
-    if (earnruleInCommunity.length !== req.body.earnruleIds.length) {
+    if (!checkCommunity) {
       res.status(400).json({ message: 'Earnrule not exist in community' })
       return
     }
 
-    if (earnruleInShop.length > 0) {
-      res.status(400).json({ message: 'Already Exist' })
+    if (checkShop) {
+      res.status(400).json({ message: 'Earnrule already exist in shop' })
       return
     }
 
@@ -143,7 +142,7 @@ export async function addEarnruleToShop(req: Request, res: Response) {
       },
       data: {
         earnruleIds: {
-          push: req.body.earnruleIds
+          push: earnruleIds
         }
       }
     })
