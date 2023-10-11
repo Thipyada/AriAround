@@ -47,25 +47,26 @@ model Organization {
 }
 
 model Earnrule {
-  id              String            @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt       DateTime          @default(now())
-  name            String            @unique
-  type            String
-  period          Period            @default(ALL_TIME) //if custom, then add start and end date
-  startDate       String?
-  endDate         String?
-  picture         String //url
-  frequency       RightperFrequency
-  setting         ResultSetting
-  active          Boolean           @default(true)
-  Community       Community[]       @relation(fields: [communityIds], references: [id])
-  communityIds    String[]          @db.ObjectId
-  Shops           Shop[]            @relation(fields: [shopIds], references: [id])
-  shopIds         String[]          @db.ObjectId
-  User            User[]            @relation(fields: [userId], references: [id])
-  userId          String[]          @db.ObjectId
-  transaction     transaction[]
-  userUseEarnrule Json?
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt          DateTime          @default(now())
+  name               String            @unique
+  type               String
+  period             Period            @default(ALL_TIME) //if custom, then add start and end date
+  startDate          DateTime?
+  endDate            DateTime?
+  nextUpdateEarnrule DateTime?
+  picture            String //url
+  frequency          RightperFrequency
+  setting            ResultSetting
+  active             Boolean           @default(true)
+  Community          Community[]       @relation(fields: [communityIds], references: [id])
+  communityIds       String[]          @db.ObjectId
+  Shops              Shop[]            @relation(fields: [shopIds], references: [id])
+  shopIds            String[]          @db.ObjectId
+  User               User[]            @relation(fields: [userId], references: [id])
+  userId             String[]          @db.ObjectId
+  transaction        transaction[]
+  userUseEarnrule    Json?
 }
 
 model transaction {
@@ -130,6 +131,7 @@ enum ResultType {
 
 enum Frequency {
   DAILY
+  WEEKLY
   MONTHLY
 }
 

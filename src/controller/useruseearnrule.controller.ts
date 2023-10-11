@@ -132,34 +132,68 @@ export async function userUseEarnRule(req: Request, res: Response) {
   }
 }
 
-//user use earnrule @ shop
+//TODO: Learn Promise all
+//Create a new route
+//-> find the earnrule that should be updated by finding the one that the nextupdate time is lesser than the current time -> result is array
+//-> then get when is the nextupdate earnrule to update nextupdate earnrule depending on frequency
+//---> use array transaction
+//-> output: Earnrule name, frequency, nextupdateearnrule
 
 export async function userUseEarnRuleReset(req: Request, res: Response) {
   try {
-    //set reset time @ 23:59:59
-    const resetTime = new Date()
-    resetTime.setHours(22, 59, 59, 99)
-
     const currentTime = new Date()
-
-    //check if time at the moment exceed reset time
-    if (currentTime.getTime() < resetTime.getTime()) {
-      res.status(400).json({ message: 'time not exceed' })
+    const earnrules = await prisma.earnrule.findMany({
+      where: {
+        nextUpdateEarnrule: {
+          lte: currentTime
+        }
+      }
+    })
+    if (earnrules.length === 0) {
+      res.status(400).json({ message: 'no earnrule to reset' })
       return
     }
 
-    //if exceed reset time, reset user use earnrule
-    await prisma.earnrule.updateMany({
-      // where: {
-      //   frequency: {
-      //     frequency: 'DAILY'
-      //   }
-      // },
-      data: {
-        userUseEarnrule: {}
-      }
-    })
+    earnrules.map((earnrule) => {
+      const frequency = earnrule.frequency.frequency as string
+      const nextUpdateEarnrule = earnrule.nextUpdateEarnrule as Date
 
+      switch (frequency) {
+        case 'DAILY':
+          nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 1)
+          break
+        case 'WEEKLY':
+          nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 7)
+          break
+        case 'MONTHLY':
+          nextUpdateEarnrule.setFullYear(
+            nextUpdateEarnrule.getFullYear(),
+            nextUpdateEarnrule.getMonth() + 1,
+            0
+          )
+          break
+      }
+
+      const nextUpdate = prisma.earnrule.update({
+        where: {
+          id: earnrule.id
+        },
+        data: {
+          nextUpdateEarnrule: nextUpdateEarnrule
+        }
+      })
+
+      const resetUserUseEarnrule = prisma.earnrule.update({
+        where: {
+          id: earnrule.id
+        },
+        data: {
+          userUseEarnrule: {}
+        }
+      })
+
+      return prisma.$transaction([nextUpdate, resetUserUseEarnrule])
+    })
     res.status(200).json({ message: 'reset user use earnrule' })
   } catch (error) {
     res.status(400).json({ message: 'error', error })

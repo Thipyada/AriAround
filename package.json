@@ -14,7 +14,7 @@
     "lint": "eslint . --ext .js,.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.4.1",
+    "@prisma/client": "^5.4.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",

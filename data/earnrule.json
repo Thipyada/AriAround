@@ -5,10 +5,53 @@
     "period": "ALL_TIME",
     "startDate": "2019-01-01",
     "endDate": "2019-12-31",
+    "nextUpdateEarnrule": "2023-10-12T00:00:00.000Z",
     "picture": "picture",
     "frequency": {
-      "right": 1,
+      "right": 3,
       "frequency": "DAILY"
+    },
+    "setting": {
+      "resultType": "FIXED",
+      "value": {
+        "amount": 1,
+        "coin": 100
+      }
+    },
+    "active": true
+  },
+  {
+    "name": "test",
+    "type": "person",
+    "period": "ALL_TIME",
+    "startDate": "2019-01-01",
+    "endDate": "2019-12-31",
+    "nextUpdateEarnrule": "2023-10-18T00:00:00.000Z",
+    "picture": "picture",
+    "frequency": {
+      "right": 10,
+      "frequency": "WEEKLY"
+    },
+    "setting": {
+      "resultType": "FIXED",
+      "value": {
+        "amount": 1,
+        "coin": 100
+      }
+    },
+    "active": true
+  },
+  {
+    "name": "John",
+    "type": "person",
+    "period": "ALL_TIME",
+    "startDate": "2019-01-01",
+    "endDate": "2019-12-31",
+    "nextUpdateEarnrule": "2023-11-11T00:00:00.000Z",
+    "picture": "picture",
+    "frequency": {
+      "right": 15,
+      "frequency": "MONTHLY"
     },
     "setting": {
       "resultType": "FIXED",
