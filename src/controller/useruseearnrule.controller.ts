@@ -97,24 +97,24 @@ export async function userUseEarnRule(req: Request, res: Response) {
       if (community.total === frequency) {
         res.status(400).json({ message: 'community use earnrule at limit' })
         return
-      }
-
-      if (
-        user &&
-        Object.keys(user).includes(userId as string) &&
-        user &&
-        typeof user[userId as string] === 'number'
-      ) {
-        user[userId as string] = (user[userId as string] as number) + 1
       } else {
-        user[userId as string] = 1
+        if (
+          user &&
+          Object.keys(user).includes(userId as string) &&
+          user &&
+          typeof user[userId as string] === 'number'
+        ) {
+          user[userId as string] = (user[userId as string] as number) + 1
+        } else {
+          user[userId as string] = 1
+        }
+
+        community.total = Object.values(
+          community.user as Prisma.JsonObject
+        ).reduce((acc, count) => (acc as number) + (count as number), 0)
+
+        userUsedEarnrule = usedEarnrule
       }
-
-      community.total = Object.values(
-        community.user as Prisma.JsonObject
-      ).reduce((acc, count) => (acc as number) + (count as number), 0)
-
-      userUsedEarnrule = usedEarnrule
     }
 
     await prisma.earnrule.update({
@@ -132,16 +132,12 @@ export async function userUseEarnRule(req: Request, res: Response) {
   }
 }
 
-//TODO:
 export async function userUseEarnRuleReset(req: Request, res: Response) {
   try {
-    //set reset time @ 12:00 AM
+    //set reset time @ 23:59:59
     const resetTime = new Date()
-    resetTime.setHours(0, 0, 0, 0)
+    resetTime.setHours(23, 59, 59, 99)
 
-    //testing after 6:45 PM
-    // const resetTime = new Date()
-    // resetTime.setHours(18, 45, 59, 0)
     const currentTime = new Date()
 
     //check if time at the moment exceed reset time
@@ -155,10 +151,6 @@ export async function userUseEarnRuleReset(req: Request, res: Response) {
         userUseEarnrule: {}
       }
     })
-
-    const earnrules = await prisma.earnrule.findMany()
-
-    console.log('reset earnrule', earnrules)
 
     res.status(200).json({ message: 'reset user use earnrule' })
   } catch (error) {
