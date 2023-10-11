@@ -8,9 +8,9 @@ const router = Router()
 router.get('/', userController.getAllUsers)
 router.get('/:id', userController.getUserById)
 router.post('/', validate, userController.createUser)
+router.put('/user-use-earnrule', userUseEarnRule) //user use earnrule @ shop
 router.put('/:id', validate, userController.updateUser)
 router.put('/earnrule/:id', userController.userAddEarnrule)
-router.put('/:id/:shopId/:earnruleId', userUseEarnRule) //user use earnrule @ shop
 router.delete('/:id', userController.deleteUser)
 
 export default router

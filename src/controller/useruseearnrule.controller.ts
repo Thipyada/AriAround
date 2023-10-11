@@ -7,7 +7,12 @@ const prisma = new PrismaClient()
 
 export async function userUseEarnRule(req: Request, res: Response) {
   try {
-    const { id, shopId, earnruleId } = req.params
+    const { userId, shopId, earnruleId } = req.body
+    if (!userId || !shopId || !earnruleId) {
+      res.status(400).json({ message: 'missing required field' })
+      return
+    }
+
     const shop = await prisma.shop.findUnique({
       where: {
         id: shopId
@@ -26,8 +31,6 @@ export async function userUseEarnRule(req: Request, res: Response) {
         id: earnruleId
       }
     })
-
-    // const frequency = EarnRule?.frequency.frequency as string
 
     if (!EarnRule) {
       res.status(400).json({ message: 'earnrule not found' })
@@ -53,7 +56,7 @@ export async function userUseEarnRule(req: Request, res: Response) {
       userUsedEarnrule = {
         [communityId]: {
           user: {
-            [id]: 1
+            [userId]: 1
           },
           total: 1
         }
@@ -69,7 +72,7 @@ export async function userUseEarnRule(req: Request, res: Response) {
 
       usedEarnrule[communityId] = {
         user: {
-          [id]: 1
+          [userId]: 1
         },
         total: 1
       }
@@ -83,26 +86,28 @@ export async function userUseEarnRule(req: Request, res: Response) {
       EarnRule?.userUseEarnrule !== null &&
       Object.keys(EarnRule?.userUseEarnrule).includes(communityId as string)
     ) {
+      const frequency = EarnRule?.frequency.right as number
+
       const usedEarnrule = EarnRule?.userUseEarnrule as Prisma.JsonObject
 
       const community = usedEarnrule[communityId as string] as Prisma.JsonObject
 
       const user = community?.user as Prisma.JsonObject
 
+      if (community.total === frequency) {
+        res.status(400).json({ message: 'community use earnrule at limit' })
+        return
+      }
+
       if (
         user &&
-        Object.keys(user).includes(id as string) &&
+        Object.keys(user).includes(userId as string) &&
         user &&
-        typeof user[id as string] === 'number'
+        typeof user[userId as string] === 'number'
       ) {
-        if (user[id as string] !== 10) {
-          user[id as string] = (user[id as string] as number) + 1
-        } else {
-          res.status(400).json({ message: 'user use earnrule at limit' })
-          return
-        }
+        user[userId as string] = (user[userId as string] as number) + 1
       } else {
-        user[id as string] = 1
+        user[userId as string] = 1
       }
 
       community.total = Object.values(
@@ -120,7 +125,42 @@ export async function userUseEarnRule(req: Request, res: Response) {
         userUseEarnrule: userUsedEarnrule
       }
     })
+
     res.status(200).json({ message: 'updated user use earnrule' })
+  } catch (error) {
+    res.status(400).json({ message: 'error', error })
+  }
+}
+
+//TODO:
+export async function userUseEarnRuleReset(req: Request, res: Response) {
+  try {
+    //set reset time @ 12:00 AM
+    const resetTime = new Date()
+    resetTime.setHours(0, 0, 0, 0)
+
+    //testing after 6:45 PM
+    // const resetTime = new Date()
+    // resetTime.setHours(18, 45, 59, 0)
+    const currentTime = new Date()
+
+    //check if time at the moment exceed reset time
+    if (currentTime.getTime() < resetTime.getTime()) {
+      res.status(400).json({ message: 'time not exceed' })
+      return
+    }
+
+    await prisma.earnrule.updateMany({
+      data: {
+        userUseEarnrule: {}
+      }
+    })
+
+    const earnrules = await prisma.earnrule.findMany()
+
+    console.log('reset earnrule', earnrules)
+
+    res.status(200).json({ message: 'reset user use earnrule' })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
