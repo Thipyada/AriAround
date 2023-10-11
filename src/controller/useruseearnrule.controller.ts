@@ -132,11 +132,13 @@ export async function userUseEarnRule(req: Request, res: Response) {
   }
 }
 
+//user use earnrule @ shop
+
 export async function userUseEarnRuleReset(req: Request, res: Response) {
   try {
     //set reset time @ 23:59:59
     const resetTime = new Date()
-    resetTime.setHours(23, 59, 59, 99)
+    resetTime.setHours(22, 59, 59, 99)
 
     const currentTime = new Date()
 
@@ -146,7 +148,13 @@ export async function userUseEarnRuleReset(req: Request, res: Response) {
       return
     }
 
+    //if exceed reset time, reset user use earnrule
     await prisma.earnrule.updateMany({
+      // where: {
+      //   frequency: {
+      //     frequency: 'DAILY'
+      //   }
+      // },
       data: {
         userUseEarnrule: {}
       }
