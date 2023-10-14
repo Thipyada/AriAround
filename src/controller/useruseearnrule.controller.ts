@@ -19,94 +19,56 @@ export async function userUseEarnRule(req: Request, res: Response) {
       }
     })
 
-    if (!shop) {
-      res.status(400).json({ message: 'shop not found' })
-      return
-    }
-
-    const communityId = shop?.communityId as string
-
     const EarnRule = await prisma.earnrule.findUnique({
       where: {
         id: earnruleId
       }
     })
-
+    if (!shop) {
+      res.status(400).json({ message: 'shop not found' })
+      return
+    }
     if (!EarnRule) {
       res.status(400).json({ message: 'earnrule not found' })
       return
     }
-
-    const check = shop.earnruleIds?.includes(EarnRule?.id as string)
-
-    if (!check) {
+    if (!shop.earnruleIds?.includes(earnruleId)) {
       res.status(400).json({ message: 'earnrule not found in shop' })
       return
     }
 
-    let userUsedEarnrule: Prisma.JsonObject =
-      (EarnRule.userUseEarnrule as Prisma.JsonObject) || {}
+    const communityId = shop?.communityId as string
+    const frequency = EarnRule?.frequency.right as number
+    let userUsedEarnrule = EarnRule.userUseEarnrule as Prisma.JsonObject
 
     // userUsedEarnrule is null or not object
     if (
-      typeof EarnRule?.userUseEarnrule !== 'object' ||
-      EarnRule?.userUseEarnrule === null
+      typeof userUsedEarnrule !== 'object' ||
+      userUsedEarnrule === null ||
+      !Object.keys(userUsedEarnrule).includes(communityId)
     ) {
-      //initiate userUseEarnrule
-      userUsedEarnrule = {
-        [communityId]: {
-          user: {
-            [userId]: 1
-          },
-          total: 1
-        }
-      }
-    }
-    // userUsedEarnrule is object but not have matching communityId
-    else if (
-      typeof EarnRule?.userUseEarnrule === 'object' &&
-      EarnRule?.userUseEarnrule !== null &&
-      !Object.keys(EarnRule?.userUseEarnrule).includes(communityId as string)
-    ) {
-      const usedEarnrule = EarnRule?.userUseEarnrule as Prisma.JsonObject
-
-      usedEarnrule[communityId] = {
+      userUsedEarnrule[communityId] = {
         user: {
           [userId]: 1
         },
         total: 1
       }
-
-      userUsedEarnrule = usedEarnrule
     }
-
-    // userUsedEarnrule is object and have matching communityId
-    else if (
-      typeof EarnRule?.userUseEarnrule === 'object' &&
-      EarnRule?.userUseEarnrule !== null &&
-      Object.keys(EarnRule?.userUseEarnrule).includes(communityId as string)
-    ) {
-      const frequency = EarnRule?.frequency.right as number
-
-      const usedEarnrule = EarnRule?.userUseEarnrule as Prisma.JsonObject
-
-      const community = usedEarnrule[communityId as string] as Prisma.JsonObject
-
+    // userUsedEarnrule has matching communityId
+    else if (Object.keys(userUsedEarnrule).includes(communityId)) {
+      const usedEarnrule = userUsedEarnrule as Prisma.JsonObject
+      const community = usedEarnrule[communityId] as Prisma.JsonObject
       const user = community?.user as Prisma.JsonObject
 
       if (community.total === frequency) {
-        res.status(400).json({ message: 'community use earnrule at limit' })
-        return
+        return res
+          .status(400)
+          .json({ message: 'community use earnrule at limit' })
       } else {
-        if (
-          user &&
-          Object.keys(user).includes(userId as string) &&
-          user &&
-          typeof user[userId as string] === 'number'
-        ) {
-          user[userId as string] = (user[userId as string] as number) + 1
+        if (user && Object.keys(user).includes(userId)) {
+          user[userId] = (user[userId] as number) + 1
         } else {
-          user[userId as string] = 1
+          user[userId] = 1
         }
 
         community.total = Object.values(
@@ -132,13 +94,6 @@ export async function userUseEarnRule(req: Request, res: Response) {
   }
 }
 
-//TODO: Learn Promise all
-//Create a new route
-//-> find the earnrule that should be updated by finding the one that the nextupdate time is lesser than the current time -> result is array
-//-> then get when is the nextupdate earnrule to update nextupdate earnrule depending on frequency
-//---> use array transaction
-//-> output: Earnrule name, frequency, nextupdateearnrule
-
 export async function userUseEarnRuleReset(req: Request, res: Response) {
   try {
     const currentTime = new Date()
@@ -154,7 +109,7 @@ export async function userUseEarnRuleReset(req: Request, res: Response) {
       return
     }
 
-    earnrules.map((earnrule) => {
+    earnrules.forEach((earnrule) => {
       const frequency = earnrule.frequency.frequency as string
       const nextUpdateEarnrule = earnrule.nextUpdateEarnrule as Date
 
@@ -169,7 +124,7 @@ export async function userUseEarnRuleReset(req: Request, res: Response) {
           nextUpdateEarnrule.setFullYear(
             nextUpdateEarnrule.getFullYear(),
             nextUpdateEarnrule.getMonth() + 1,
-            0
+            1
           )
           break
       }
