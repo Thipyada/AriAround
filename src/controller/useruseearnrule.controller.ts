@@ -65,15 +65,18 @@ export async function userUseEarnRule(req: Request, res: Response) {
           .status(400)
           .json({ message: 'community use earnrule at limit' })
       } else {
-        if (user && Object.keys(user).includes(userId)) {
-          user[userId] = (user[userId] as number) + 1
-        } else {
-          user[userId] = 1
-        }
-
-        community.total = Object.values(
-          community.user as Prisma.JsonObject
-        ).reduce((acc, count) => (acc as number) + (count as number), 0)
+        new Promise((resolve) => {
+          if (user && Object.keys(user).includes(userId)) {
+            resolve((user[userId] = (user[userId] as number) + 1))
+          } else {
+            resolve((user[userId] = 1))
+          }
+        }).then(() => {
+          new Promise((resolve) => {
+            //TODO: total +1 only
+            resolve((community.total = (community.total as number) + 1))
+          })
+        })
 
         userUsedEarnrule = usedEarnrule
       }
@@ -104,52 +107,57 @@ export async function userUseEarnRuleReset(req: Request, res: Response) {
         }
       }
     })
+
     if (earnrules.length === 0) {
       res.status(400).json({ message: 'no earnrule to reset' })
       return
     }
 
-    earnrules.forEach((earnrule) => {
-      const frequency = earnrule.frequency.frequency as string
-      const nextUpdateEarnrule = earnrule.nextUpdateEarnrule as Date
+    const updatedEarnRules = await Promise.all(
+      earnrules.map(async (earnrule) => {
+        const frequency = earnrule.frequency.frequency as string
+        const nextUpdateEarnrule = earnrule.nextUpdateEarnrule as Date
 
-      switch (frequency) {
-        case 'DAILY':
-          nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 1)
-          break
-        case 'WEEKLY':
-          nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 7)
-          break
-        case 'MONTHLY':
-          nextUpdateEarnrule.setFullYear(
-            nextUpdateEarnrule.getFullYear(),
-            nextUpdateEarnrule.getMonth() + 1,
-            1
-          )
-          break
-      }
-
-      const nextUpdate = prisma.earnrule.update({
-        where: {
-          id: earnrule.id
-        },
-        data: {
-          nextUpdateEarnrule: nextUpdateEarnrule
+        switch (frequency) {
+          case 'DAILY':
+            nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 1)
+            break
+          case 'WEEKLY':
+            nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 7)
+            break
+          case 'MONTHLY':
+            nextUpdateEarnrule.setFullYear(
+              nextUpdateEarnrule.getFullYear(),
+              nextUpdateEarnrule.getMonth() + 1,
+              0
+            )
+            break
         }
-      })
 
-      const resetUserUseEarnrule = prisma.earnrule.update({
-        where: {
-          id: earnrule.id
-        },
-        data: {
-          userUseEarnrule: {}
-        }
-      })
+        // Use a transaction to ensure atomic updates
+        await prisma.$transaction([
+          prisma.earnrule.update({
+            where: { id: earnrule.id },
+            data: { nextUpdateEarnrule: nextUpdateEarnrule }
+          }),
+          prisma.earnrule.update({
+            where: { id: earnrule.id },
+            data: { userUseEarnrule: {} }
+          })
+        ])
 
-      return prisma.$transaction([nextUpdate, resetUserUseEarnrule])
-    })
-    res.status(200).json({ message: 'reset user use earnrule' })
+        // Push the updated earn rule data to the array
+        return prisma.earnrule.findUnique({
+          where: {
+            id: earnrule.id
+          }
+        })
+      })
+    )
+
+    res
+      .status(200)
+      .json({ message: 'reset user use earnrule', data: updatedEarnRules })
   } catch (error) {
     res.status(400).json({ message: 'error', error })
   }
