@@ -97,7 +97,7 @@ export async function userUseEarnRule(req: Request, res: Response) {
   }
 }
 
-export async function userUseEarnRuleReset(req: Request, res: Response) {
+export async function userUseEarnRuleReset2(req: Request, res: Response) {
   try {
     const currentTime = new Date()
     const earnrules = await prisma.earnrule.findMany({
@@ -134,26 +134,74 @@ export async function userUseEarnRuleReset(req: Request, res: Response) {
             break
         }
 
-        // Use a transaction to ensure atomic updates
-        await prisma.$transaction([
-          prisma.earnrule.update({
-            where: { id: earnrule.id },
-            data: { nextUpdateEarnrule: nextUpdateEarnrule }
-          }),
-          prisma.earnrule.update({
-            where: { id: earnrule.id },
-            data: { userUseEarnrule: {} }
-          })
-        ])
-
-        // Push the updated earn rule data to the array
-        return prisma.earnrule.findUnique({
-          where: {
-            id: earnrule.id
+        return prisma.earnrule.update({
+          where: { id: earnrule.id },
+          data: {
+            nextUpdateEarnrule: nextUpdateEarnrule,
+            userUseEarnrule: {}
           }
         })
       })
     )
+
+    res
+      .status(200)
+      .json({ message: 'reset user use earnrule', data: updatedEarnRules })
+  } catch (error) {
+    res.status(400).json({ message: 'error', error })
+  }
+}
+
+export async function userUseEarnRuleReset(req: Request, res: Response) {
+  try {
+    const currentTime = new Date()
+    const earnrules = await prisma.earnrule.findMany({
+      where: {
+        nextUpdateEarnrule: {
+          lte: currentTime
+        }
+      }
+    })
+
+    if (earnrules.length === 0) {
+      res.status(400).json({ message: 'no earnrule to reset' })
+      return
+    }
+
+    //TODO: transaction instead of Promise.all
+
+    const updatedEarnRules = await prisma.$transaction(async (tx) => {
+      for (let i = 0; i < earnrules.length; i++) {
+        const frequency = earnrules[i].frequency.frequency as string
+        const nextUpdateEarnrule = earnrules[i].nextUpdateEarnrule as Date
+
+        switch (frequency) {
+          case 'DAILY':
+            nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 1)
+            break
+          case 'WEEKLY':
+            nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 7)
+            break
+          case 'MONTHLY':
+            nextUpdateEarnrule.setFullYear(
+              nextUpdateEarnrule.getFullYear(),
+              nextUpdateEarnrule.getMonth() + 1,
+              0
+            )
+            break
+        }
+
+        const update = await tx.earnrule.update({
+          where: { id: earnrules[i].id },
+          data: {
+            nextUpdateEarnrule: nextUpdateEarnrule,
+            userUseEarnrule: {}
+          }
+        })
+
+        return update
+      }
+    })
 
     res
       .status(200)
