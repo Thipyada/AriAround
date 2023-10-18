@@ -170,37 +170,69 @@ export async function userUseEarnRuleReset(req: Request, res: Response) {
 
     //TODO: transaction instead of Promise.all
 
+    // const updatedEarnRules = await prisma.$transaction(async (tx) => {
+    //   for (let i = 0; i < earnrules.length; i++) {
+    //     const frequency = earnrules[i].frequency.frequency as string
+    //     const nextUpdateEarnrule = earnrules[i].nextUpdateEarnrule as Date
+
+    //     switch (frequency) {
+    //       case 'DAILY':
+    //         nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 1)
+    //         break
+    //       case 'WEEKLY':
+    //         nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 7)
+    //         break
+    //       case 'MONTHLY':
+    //         nextUpdateEarnrule.setFullYear(
+    //           nextUpdateEarnrule.getFullYear(),
+    //           nextUpdateEarnrule.getMonth() + 1,
+    //           0
+    //         )
+    //         break
+    //     }
+
+    //     const update = await tx.earnrule.update({
+    //       where: { id: earnrules[i].id },
+    //       data: {
+    //         nextUpdateEarnrule: nextUpdateEarnrule,
+    //         userUseEarnrule: {}
+    //       }
+    //     })
+    //   }
+    // })
+
     const updatedEarnRules = await prisma.$transaction(async (tx) => {
-      for (let i = 0; i < earnrules.length; i++) {
-        const frequency = earnrules[i].frequency.frequency as string
-        const nextUpdateEarnrule = earnrules[i].nextUpdateEarnrule as Date
+      const resetArray = await Promise.all(
+        earnrules.map(async (earnrule) => {
+          const frequency = earnrule.frequency.frequency as string
+          const nextUpdateEarnrule = earnrule.nextUpdateEarnrule as Date
 
-        switch (frequency) {
-          case 'DAILY':
-            nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 1)
-            break
-          case 'WEEKLY':
-            nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 7)
-            break
-          case 'MONTHLY':
-            nextUpdateEarnrule.setFullYear(
-              nextUpdateEarnrule.getFullYear(),
-              nextUpdateEarnrule.getMonth() + 1,
-              0
-            )
-            break
-        }
-
-        const update = await tx.earnrule.update({
-          where: { id: earnrules[i].id },
-          data: {
-            nextUpdateEarnrule: nextUpdateEarnrule,
-            userUseEarnrule: {}
+          switch (frequency) {
+            case 'DAILY':
+              nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 1)
+              break
+            case 'WEEKLY':
+              nextUpdateEarnrule.setDate(nextUpdateEarnrule.getDate() + 7)
+              break
+            case 'MONTHLY':
+              nextUpdateEarnrule.setFullYear(
+                nextUpdateEarnrule.getFullYear(),
+                nextUpdateEarnrule.getMonth() + 1,
+                0
+              )
+              break
           }
-        })
 
-        return update
-      }
+          return tx.earnrule.update({
+            where: { id: earnrule.id },
+            data: {
+              nextUpdateEarnrule: nextUpdateEarnrule,
+              userUseEarnrule: {}
+            }
+          })
+        })
+      )
+      return resetArray
     })
 
     res
