@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma-client"
 }
 
 datasource db {
@@ -22,8 +21,8 @@ model User {
 
 model Admin {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  created     DateTime     @default(now())
+  updated     DateTime     @updatedAt
   name        String       @unique
   email       String       @unique
   profilePic  String?
@@ -42,8 +41,8 @@ model Organization {
   createdAt DateTime @default(now())
   updated   DateTime @updatedAt
   name      String   @unique
-  Instagram String?
-  Facebook  String?
+  instagram String?
+  facebook  String?
   type      String
   status    Status   @default(PENDING)
   users     User[]

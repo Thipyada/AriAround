@@ -1,25 +1,6 @@
+import { Frequency, Period, ResultType } from '@prisma/client'
 import { z } from 'zod'
-
-const earnRuleSchema = z.object({
-  name: z.string(),
-  type: z.string(),
-  period: z.string(),
-  startDate: z.string().optional(),
-  endDate: z.string().optional(),
-  picture: z.string(),
-  frequency: z.object({
-    right: z.number(),
-    frequency: z.string()
-  }),
-  setting: z.object({
-    resultType: z.string(),
-    value: z.object({
-      amount: z.number(),
-      coin: z.number()
-    })
-  }),
-  active: z.boolean()
-})
+import { earnRuleSchema } from './earnrule.router'
 
 type earnRuleScheme = z.infer<typeof earnRuleSchema>
 

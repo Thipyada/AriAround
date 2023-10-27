@@ -3,7 +3,7 @@ import * as communityController from './community.controller'
 import { z } from 'zod'
 import { validatorInput } from '../../middleware/validatorInput'
 
-const communitySchema = z.object({
+export const communitySchema = z.object({
   thaiName: z.string(),
   englishName: z.string(),
   founded: z.string(),

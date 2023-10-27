@@ -3,7 +3,7 @@ import * as shopController from './shop.controller'
 import { z } from 'zod'
 import { validatorInput } from '../../middleware/validatorInput'
 
-const shopSchema = z.object({
+export const shopSchema = z.object({
   name: z.string(),
   communityId: z.string()
 })

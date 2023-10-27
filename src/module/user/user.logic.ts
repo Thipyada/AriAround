@@ -1,10 +1,5 @@
 import { z } from 'zod'
-
-const userSchema = z.object({
-  name: z.string(),
-  organizationId: z.string(),
-  status: z.string().optional()
-})
+import { userSchema } from './user.router'
 
 type userScheme = z.infer<typeof userSchema>
 

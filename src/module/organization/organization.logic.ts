@@ -1,12 +1,5 @@
 import { z } from 'zod'
-
-const organizationSchema = z.object({
-  name: z.string(),
-  Instagram: z.string().optional(),
-  Facebook: z.string().optional(),
-  type: z.string(),
-  status: z.string()
-})
+import { organizationSchema } from './organization.router'
 
 type organizationScheme = z.infer<typeof organizationSchema>
 

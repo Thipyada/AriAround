@@ -1,8 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
 import { PrismaHelper } from '../../utils'
+import { newUser } from './user.logic'
 
 const prisma = new PrismaClient()
+
+const db = prisma.user
 
 const getQuery = (req: Request) => {
   const { name } = req.query
@@ -71,24 +74,37 @@ export async function getUserById(req: Request, res: Response) {
 
 export async function createUser(req: Request, res: Response) {
   try {
-    if (Array.isArray(req.body)) {
-      await prisma.user.createMany({
-        data: req.body
-      })
-      res.status(200).json({ message: 'users Created' })
-      return
-    } else {
-      await prisma.user.create({
-        data: {
-          ...req.body
-        }
-      })
-      res.status(200).json({ message: 'user Created' })
-    }
+    const data = await db.create({
+      data: {
+        ...newUser(req.body)
+      }
+    })
+
+    res.status(200).json({ message: 'community Created', data })
   } catch (error) {
-    res.status(400).json({ message: 'error', error })
+    res.status(400).json({ message: 'create fail', error })
   }
 }
+// export async function createUser(req: Request, res: Response) {
+//   try {
+//     if (Array.isArray(req.body)) {
+//       await prisma.user.createMany({
+//         data: req.body
+//       })
+//       res.status(200).json({ message: 'users Created' })
+//       return
+//     } else {
+//       await prisma.user.create({
+//         data: {
+//           ...req.body
+//         }
+//       })
+//       res.status(200).json({ message: 'user Created' })
+//     }
+//   } catch (error) {
+//     res.status(400).json({ message: 'error', error })
+//   }
+// }
 
 export async function updateUser(req: Request, res: Response) {
   try {

@@ -2833,7 +2833,7 @@ export namespace Prisma {
 
   export type AdminMinAggregateOutputType = {
     id: string | null
-    createdAt: Date | null
+    created: Date | null
     updated: Date | null
     name: string | null
     email: string | null
@@ -2843,7 +2843,7 @@ export namespace Prisma {
 
   export type AdminMaxAggregateOutputType = {
     id: string | null
-    createdAt: Date | null
+    created: Date | null
     updated: Date | null
     name: string | null
     email: string | null
@@ -2853,7 +2853,7 @@ export namespace Prisma {
 
   export type AdminCountAggregateOutputType = {
     id: number
-    createdAt: number
+    created: number
     updated: number
     name: number
     email: number
@@ -2865,7 +2865,7 @@ export namespace Prisma {
 
   export type AdminMinAggregateInputType = {
     id?: true
-    createdAt?: true
+    created?: true
     updated?: true
     name?: true
     email?: true
@@ -2875,7 +2875,7 @@ export namespace Prisma {
 
   export type AdminMaxAggregateInputType = {
     id?: true
-    createdAt?: true
+    created?: true
     updated?: true
     name?: true
     email?: true
@@ -2885,7 +2885,7 @@ export namespace Prisma {
 
   export type AdminCountAggregateInputType = {
     id?: true
-    createdAt?: true
+    created?: true
     updated?: true
     name?: true
     email?: true
@@ -2968,7 +2968,7 @@ export namespace Prisma {
 
   export type AdminGroupByOutputType = {
     id: string
-    createdAt: Date
+    created: Date
     updated: Date
     name: string
     email: string
@@ -2995,7 +2995,7 @@ export namespace Prisma {
 
   export type AdminSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    createdAt?: boolean
+    created?: boolean
     updated?: boolean
     name?: boolean
     email?: boolean
@@ -3006,7 +3006,7 @@ export namespace Prisma {
 
   export type AdminSelectScalar = {
     id?: boolean
-    createdAt?: boolean
+    created?: boolean
     updated?: boolean
     name?: boolean
     email?: boolean
@@ -3022,7 +3022,7 @@ export namespace Prisma {
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      createdAt: Date
+      created: Date
       updated: Date
       name: string
       email: string
@@ -3452,7 +3452,7 @@ export namespace Prisma {
    */ 
   interface AdminFieldRefs {
     readonly id: FieldRef<"Admin", 'String'>
-    readonly createdAt: FieldRef<"Admin", 'DateTime'>
+    readonly created: FieldRef<"Admin", 'DateTime'>
     readonly updated: FieldRef<"Admin", 'DateTime'>
     readonly name: FieldRef<"Admin", 'String'>
     readonly email: FieldRef<"Admin", 'String'>
@@ -6008,7 +6008,7 @@ export namespace Prisma {
     updated: Date | null
     thaiName: string | null
     englishName: string | null
-    founded: string | null
+    founded: Date | null
     active: boolean | null
     description: string | null
     owner: string | null
@@ -6020,7 +6020,7 @@ export namespace Prisma {
     updated: Date | null
     thaiName: string | null
     englishName: string | null
-    founded: string | null
+    founded: Date | null
     active: boolean | null
     description: string | null
     owner: string | null
@@ -6157,7 +6157,7 @@ export namespace Prisma {
     updated: Date
     thaiName: string
     englishName: string
-    founded: string
+    founded: Date
     active: boolean
     description: string | null
     owner: string
@@ -6229,7 +6229,7 @@ export namespace Prisma {
       updated: Date
       thaiName: string
       englishName: string
-      founded: string
+      founded: Date
       active: boolean
       description: string | null
       owner: string
@@ -6663,7 +6663,7 @@ export namespace Prisma {
     readonly updated: FieldRef<"Community", 'DateTime'>
     readonly thaiName: FieldRef<"Community", 'String'>
     readonly englishName: FieldRef<"Community", 'String'>
-    readonly founded: FieldRef<"Community", 'String'>
+    readonly founded: FieldRef<"Community", 'DateTime'>
     readonly active: FieldRef<"Community", 'Boolean'>
     readonly description: FieldRef<"Community", 'String'>
     readonly owner: FieldRef<"Community", 'String'>
@@ -8094,7 +8094,7 @@ export namespace Prisma {
 
   export const AdminScalarFieldEnum: {
     id: 'id',
-    createdAt: 'createdAt',
+    created: 'created',
     updated: 'updated',
     name: 'name',
     email: 'email',
@@ -8391,7 +8391,7 @@ export namespace Prisma {
     OR?: AdminWhereInput[]
     NOT?: AdminWhereInput | AdminWhereInput[]
     id?: StringFilter<"Admin"> | string
-    createdAt?: DateTimeFilter<"Admin"> | Date | string
+    created?: DateTimeFilter<"Admin"> | Date | string
     updated?: DateTimeFilter<"Admin"> | Date | string
     name?: StringFilter<"Admin"> | string
     email?: StringFilter<"Admin"> | string
@@ -8402,7 +8402,7 @@ export namespace Prisma {
 
   export type AdminOrderByWithRelationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    created?: SortOrder
     updated?: SortOrder
     name?: SortOrder
     email?: SortOrder
@@ -8418,7 +8418,7 @@ export namespace Prisma {
     AND?: AdminWhereInput | AdminWhereInput[]
     OR?: AdminWhereInput[]
     NOT?: AdminWhereInput | AdminWhereInput[]
-    createdAt?: DateTimeFilter<"Admin"> | Date | string
+    created?: DateTimeFilter<"Admin"> | Date | string
     updated?: DateTimeFilter<"Admin"> | Date | string
     profilePic?: StringNullableFilter<"Admin"> | string | null
     phone?: StringNullableFilter<"Admin"> | string | null
@@ -8427,7 +8427,7 @@ export namespace Prisma {
 
   export type AdminOrderByWithAggregationInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    created?: SortOrder
     updated?: SortOrder
     name?: SortOrder
     email?: SortOrder
@@ -8443,7 +8443,7 @@ export namespace Prisma {
     OR?: AdminScalarWhereWithAggregatesInput[]
     NOT?: AdminScalarWhereWithAggregatesInput | AdminScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Admin"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Admin"> | Date | string
+    created?: DateTimeWithAggregatesFilter<"Admin"> | Date | string
     updated?: DateTimeWithAggregatesFilter<"Admin"> | Date | string
     name?: StringWithAggregatesFilter<"Admin"> | string
     email?: StringWithAggregatesFilter<"Admin"> | string
@@ -8647,7 +8647,7 @@ export namespace Prisma {
     updated?: DateTimeFilter<"Community"> | Date | string
     thaiName?: StringFilter<"Community"> | string
     englishName?: StringFilter<"Community"> | string
-    founded?: StringFilter<"Community"> | string
+    founded?: DateTimeFilter<"Community"> | Date | string
     active?: BoolFilter<"Community"> | boolean
     description?: StringNullableFilter<"Community"> | string | null
     owner?: StringFilter<"Community"> | string
@@ -8680,7 +8680,7 @@ export namespace Prisma {
     NOT?: CommunityWhereInput | CommunityWhereInput[]
     createdAt?: DateTimeFilter<"Community"> | Date | string
     updated?: DateTimeFilter<"Community"> | Date | string
-    founded?: StringFilter<"Community"> | string
+    founded?: DateTimeFilter<"Community"> | Date | string
     active?: BoolFilter<"Community"> | boolean
     description?: StringNullableFilter<"Community"> | string | null
     owner?: StringFilter<"Community"> | string
@@ -8714,7 +8714,7 @@ export namespace Prisma {
     updated?: DateTimeWithAggregatesFilter<"Community"> | Date | string
     thaiName?: StringWithAggregatesFilter<"Community"> | string
     englishName?: StringWithAggregatesFilter<"Community"> | string
-    founded?: StringWithAggregatesFilter<"Community"> | string
+    founded?: DateTimeWithAggregatesFilter<"Community"> | Date | string
     active?: BoolWithAggregatesFilter<"Community"> | boolean
     description?: StringNullableWithAggregatesFilter<"Community"> | string | null
     owner?: StringWithAggregatesFilter<"Community"> | string
@@ -8852,7 +8852,7 @@ export namespace Prisma {
 
   export type AdminCreateInput = {
     id?: string
-    createdAt?: Date | string
+    created?: Date | string
     updated?: Date | string
     name: string
     email: string
@@ -8863,7 +8863,7 @@ export namespace Prisma {
 
   export type AdminUncheckedCreateInput = {
     id?: string
-    createdAt?: Date | string
+    created?: Date | string
     updated?: Date | string
     name: string
     email: string
@@ -8873,7 +8873,7 @@ export namespace Prisma {
   }
 
   export type AdminUpdateInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created?: DateTimeFieldUpdateOperationsInput | Date | string
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -8883,7 +8883,7 @@ export namespace Prisma {
   }
 
   export type AdminUncheckedUpdateInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created?: DateTimeFieldUpdateOperationsInput | Date | string
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -8894,7 +8894,7 @@ export namespace Prisma {
 
   export type AdminCreateManyInput = {
     id?: string
-    createdAt?: Date | string
+    created?: Date | string
     updated?: Date | string
     name: string
     email: string
@@ -8904,7 +8904,7 @@ export namespace Prisma {
   }
 
   export type AdminUpdateManyMutationInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created?: DateTimeFieldUpdateOperationsInput | Date | string
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -8914,7 +8914,7 @@ export namespace Prisma {
   }
 
   export type AdminUncheckedUpdateManyInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    created?: DateTimeFieldUpdateOperationsInput | Date | string
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -9145,7 +9145,7 @@ export namespace Prisma {
     updated?: Date | string
     thaiName: string
     englishName: string
-    founded: string
+    founded?: Date | string
     active?: boolean
     description?: string | null
     owner: string
@@ -9159,7 +9159,7 @@ export namespace Prisma {
     updated?: Date | string
     thaiName: string
     englishName: string
-    founded: string
+    founded?: Date | string
     active?: boolean
     description?: string | null
     owner: string
@@ -9173,7 +9173,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -9186,7 +9186,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -9201,7 +9201,7 @@ export namespace Prisma {
     updated?: Date | string
     thaiName: string
     englishName: string
-    founded: string
+    founded?: Date | string
     active?: boolean
     description?: string | null
     owner: string
@@ -9213,7 +9213,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -9224,7 +9224,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -9455,7 +9455,7 @@ export namespace Prisma {
 
   export type AdminCountOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    created?: SortOrder
     updated?: SortOrder
     name?: SortOrder
     email?: SortOrder
@@ -9465,7 +9465,7 @@ export namespace Prisma {
 
   export type AdminMaxOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    created?: SortOrder
     updated?: SortOrder
     name?: SortOrder
     email?: SortOrder
@@ -9475,7 +9475,7 @@ export namespace Prisma {
 
   export type AdminMinOrderByAggregateInput = {
     id?: SortOrder
-    createdAt?: SortOrder
+    created?: SortOrder
     updated?: SortOrder
     name?: SortOrder
     email?: SortOrder
@@ -10755,7 +10755,7 @@ export namespace Prisma {
     updated?: Date | string
     thaiName: string
     englishName: string
-    founded: string
+    founded?: Date | string
     active?: boolean
     description?: string | null
     owner: string
@@ -10768,7 +10768,7 @@ export namespace Prisma {
     updated?: Date | string
     thaiName: string
     englishName: string
-    founded: string
+    founded?: Date | string
     active?: boolean
     description?: string | null
     owner: string
@@ -10862,7 +10862,7 @@ export namespace Prisma {
     updated?: DateTimeFilter<"Community"> | Date | string
     thaiName?: StringFilter<"Community"> | string
     englishName?: StringFilter<"Community"> | string
-    founded?: StringFilter<"Community"> | string
+    founded?: DateTimeFilter<"Community"> | Date | string
     active?: BoolFilter<"Community"> | boolean
     description?: StringNullableFilter<"Community"> | string | null
     owner?: StringFilter<"Community"> | string
@@ -11023,7 +11023,7 @@ export namespace Prisma {
     updated?: Date | string
     thaiName: string
     englishName: string
-    founded: string
+    founded?: Date | string
     active?: boolean
     description?: string | null
     owner: string
@@ -11036,7 +11036,7 @@ export namespace Prisma {
     updated?: Date | string
     thaiName: string
     englishName: string
-    founded: string
+    founded?: Date | string
     active?: boolean
     description?: string | null
     owner: string
@@ -11111,7 +11111,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -11123,7 +11123,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -11309,7 +11309,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -11321,7 +11321,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string
@@ -11334,7 +11334,7 @@ export namespace Prisma {
     updated?: DateTimeFieldUpdateOperationsInput | Date | string
     thaiName?: StringFieldUpdateOperationsInput | string
     englishName?: StringFieldUpdateOperationsInput | string
-    founded?: StringFieldUpdateOperationsInput | string
+    founded?: DateTimeFieldUpdateOperationsInput | Date | string
     active?: BoolFieldUpdateOperationsInput | boolean
     description?: NullableStringFieldUpdateOperationsInput | string | null
     owner?: StringFieldUpdateOperationsInput | string

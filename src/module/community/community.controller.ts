@@ -1,8 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
 import { PrismaHelper } from '../../utils'
+import { newCommunity } from './community.logic'
 
 const prisma = new PrismaClient()
+
+const db = prisma.community
 
 const getQuery = (req: Request) => {
   const { thaiName, englishName } = req.query
@@ -92,24 +95,38 @@ export async function getCommunityById(req: Request, res: Response) {
   }
 }
 
+// export async function createCommunity(req: Request, res: Response) {
+//   try {
+//     if (Array.isArray(req.body)) {
+//       await prisma.community.createMany({
+//         data: req.body
+//       })
+//       res.status(200).json({ message: 'Communities Created' })
+//       return
+//     } else {
+//       await prisma.community.create({
+//         data: {
+//           ...req.body
+//         }
+//       })
+//       res.status(200).json({ message: 'Community Created' })
+//     }
+//   } catch (error) {
+//     res.status(400).json({ message: 'error', error })
+//   }
+// }
+
 export async function createCommunity(req: Request, res: Response) {
   try {
-    if (Array.isArray(req.body)) {
-      await prisma.community.createMany({
-        data: req.body
-      })
-      res.status(200).json({ message: 'Communities Created' })
-      return
-    } else {
-      await prisma.community.create({
-        data: {
-          ...req.body
-        }
-      })
-      res.status(200).json({ message: 'Community Created' })
-    }
+    const data = await db.create({
+      data: {
+        ...newCommunity(req.body)
+      }
+    })
+
+    res.status(200).json({ message: 'community Created', data })
   } catch (error) {
-    res.status(400).json({ message: 'error', error })
+    res.status(400).json({ message: 'create fail', error })
   }
 }
 

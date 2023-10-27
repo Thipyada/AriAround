@@ -1,7 +1,8 @@
-import { Prisma } from '@prisma/client'
+import { Admin, Prisma } from '@prisma/client'
 import { Request, Response } from 'express'
 import { PrismaHelper } from '../../utils'
 import { prisma } from '../../utils/prisma'
+import { newAdmin } from './admin.logic'
 
 const db = prisma.admin
 
@@ -102,8 +103,10 @@ export async function getAdminById(req: Request, res: Response) {
 
 export async function createAdmin(req: Request, res: Response) {
   try {
-    const data = await db.createMany({
-      data: req.body
+    const data = await db.create({
+      data: {
+        ...newAdmin(req.body)
+      }
     })
 
     res.status(200).json({ message: 'admin Created', data })
@@ -112,6 +115,28 @@ export async function createAdmin(req: Request, res: Response) {
   }
 }
 
+// export async function updateAdmin(req: Request, res: Response) {
+//   try {
+//     const { id } = req.params
+
+//     // const getAdmin = await PrismaHelper.getByIdPrisma<Admin>({
+//     //   id: id,
+//     //   key: 'id',
+//     //   tableName: 'admin'
+//     // })
+
+//     const data = await db.update({
+//       where: {
+//         id: id
+//       },
+//       data: req.body
+//     })
+//     res.json({ data })
+//   } catch (error) {
+//     console.debug('57 😙 => admin.controller.ts error =', error)
+//     res.status(400).json({ message: 'error', error })
+//   }
+// }
 export async function updateAdmin(req: Request, res: Response) {
   try {
     const admin = await prisma.admin.findUnique({
@@ -123,7 +148,7 @@ export async function updateAdmin(req: Request, res: Response) {
       res.status(404).json({ message: 'Not Found' })
       return
     }
-    await prisma.admin.update({
+    await db.update({
       where: {
         id: req.params.id
       },

@@ -22,7 +22,7 @@ model User {
 
 model Admin {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime     @default(now())
+  created     DateTime     @default(now())
   updated     DateTime     @updatedAt
   name        String       @unique
   email       String       @unique
@@ -78,7 +78,7 @@ model Community {
   updated     DateTime   @updatedAt
   thaiName    String     @unique
   englishName String     @unique
-  founded     String
+  founded     DateTime   @default(now())
   active      Boolean    @default(true)
   description String?
   owner       String

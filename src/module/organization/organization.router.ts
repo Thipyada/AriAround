@@ -2,13 +2,14 @@ import { Router } from 'express'
 import * as organizationController from './organization.controller'
 import { z } from 'zod'
 import { validatorInput } from '../../middleware/validatorInput'
+import { Status } from '@prisma/client'
 
-const organizationSchema = z.object({
+export const organizationSchema = z.object({
   name: z.string(),
   Instagram: z.string().optional(),
   Facebook: z.string().optional(),
   type: z.string(),
-  status: z.string()
+  status: z.nativeEnum(Status)
 })
 
 const router = Router()

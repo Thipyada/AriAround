@@ -3,20 +3,21 @@ import * as earnruleController from './earnrule.controller'
 import { userUseEarnRuleReset } from '../common/useruseearnrule.controller'
 import { validatorInput } from '../../middleware/validatorInput'
 import { z } from 'zod'
+import { Frequency, Period, ResultType } from '@prisma/client'
 
-const earnRuleSchema = z.object({
+export const earnRuleSchema = z.object({
   name: z.string(),
   type: z.string(),
-  period: z.string(),
+  period: z.nativeEnum(Period),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   picture: z.string(),
   frequency: z.object({
     right: z.number(),
-    frequency: z.string()
+    frequency: z.nativeEnum(Frequency)
   }),
   setting: z.object({
-    resultType: z.string(),
+    resultType: z.nativeEnum(ResultType),
     value: z.object({
       amount: z.number(),
       coin: z.number()

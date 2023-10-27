@@ -1,9 +1,5 @@
 import { z } from 'zod'
-
-const shopSchema = z.object({
-  name: z.string(),
-  communityId: z.string()
-})
+import { shopSchema } from './shop.router'
 
 type shopScheme = z.infer<typeof shopSchema>
 

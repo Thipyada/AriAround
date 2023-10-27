@@ -1,8 +1,10 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { Request, Response } from 'express'
 import { PrismaHelper } from '../../utils'
+import { newOrganization } from './organization.logic'
 
 const prisma = new PrismaClient()
+const db = prisma.organization
 
 const getQuery = (req: Request) => {
   const { name, type, status } = req.query
@@ -103,24 +105,37 @@ export async function getOrganizationById(req: Request, res: Response) {
 
 export async function createOrganization(req: Request, res: Response) {
   try {
-    if (Array.isArray(req.body)) {
-      await prisma.organization.createMany({
-        data: req.body
-      })
-      res.status(200).json({ message: 'Organizations Created' })
-      return
-    } else {
-      await prisma.organization.create({
-        data: {
-          ...req.body
-        }
-      })
-      res.status(200).json({ message: 'Organization Created' })
-    }
+    const data = await db.create({
+      data: {
+        ...newOrganization(req.body)
+      }
+    })
+
+    res.status(200).json({ message: 'community Created', data })
   } catch (error) {
-    res.status(400).json({ message: 'error', error })
+    res.status(400).json({ message: 'create fail', error })
   }
 }
+// export async function createOrganization(req: Request, res: Response) {
+//   try {
+//     if (Array.isArray(req.body)) {
+//       await prisma.organization.createMany({
+//         data: req.body
+//       })
+//       res.status(200).json({ message: 'Organizations Created' })
+//       return
+//     } else {
+//       await prisma.organization.create({
+//         data: {
+//           ...req.body
+//         }
+//       })
+//       res.status(200).json({ message: 'Organization Created' })
+//     }
+//   } catch (error) {
+//     res.status(400).json({ message: 'error', error })
+//   }
+// }
 
 export async function updateOrganization(req: Request, res: Response) {
   try {

@@ -3,11 +3,12 @@ import * as userController from './user.controller'
 import { userUseEarnRule } from '../common/useruseearnrule.controller'
 import { validatorInput } from '../../middleware/validatorInput'
 import { z } from 'zod'
+import { Status } from '@prisma/client'
 
-const userSchema = z.object({
+export const userSchema = z.object({
   name: z.string(),
   organizationId: z.string(),
-  status: z.string().optional()
+  status: z.nativeEnum(Status).optional()
 })
 
 const router = Router()

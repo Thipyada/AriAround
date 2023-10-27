@@ -2,10 +2,11 @@ import { Router } from 'express'
 import * as adminController from './admin.controller'
 import { z } from 'zod'
 import { validatorInput } from '../../middleware/validatorInput'
+import { PermissionFeature } from '@prisma/client'
 
 const router = Router()
 
-const adminSchema = z.object({
+export const adminSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   profilePic: z.string().optional(),
@@ -14,7 +15,7 @@ const adminSchema = z.object({
     z.object({
       feature: z.string(),
       show: z.boolean(),
-      permissionFeature: z.string()
+      permissionFeature: z.nativeEnum(PermissionFeature)
     })
   )
 })
