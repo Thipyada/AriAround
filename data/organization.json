@@ -1,8 +1,9 @@
 [
   {
+    "id": "653b3150ea73f8500059a8dd",
     "name": "Organisation 1",
-    "Instagram": "test",
-    "Facebook": "test",
+    "instagram": "test",
+    "facebook": "test",
     "type": "test",
     "status": "PENDING"
   }

@@ -1,12 +1,14 @@
 [
   {
+    "id": "653b318cea73f8500059a8df",
     "name": "Ari shop",
-    "communityId": "651ccd400f1090ea2cbc06b2",
-    "earnruleIds": ["651b62fa9598e954c1d4cb12", "651b7f63dabd36f7a082ffb6"]
+    "communityId": "653b306edbccbddcbbddb605",
+    "earnruleIds": ["653b30d3dbccbddcbbddb608", "653b30efdbccbddcbbddb609"]
   },
   {
+    "id": "653b31aeea73f8500059a8e0",
     "name": "Onnut shop",
-    "communityId": "6524839b51a40248f423626c",
-    "earnruleIds": ["651b62fa9598e954c1d4cb12", "651b63119598e954c1d4cb13"]
+    "communityId": "653b3088dbccbddcbbddb606",
+    "earnruleIds": ["653b30efdbccbddcbbddb609", "653b3112dbccbddcbbddb60a"]
   }
 ]

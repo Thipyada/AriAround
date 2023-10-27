@@ -1,5 +1,6 @@
 [
   {
+    "id": "653b30d3dbccbddcbbddb608",
     "name": "1st rule",
     "type": "rule",
     "period": "ALL_TIME",
@@ -21,6 +22,7 @@
     "active": true
   },
   {
+    "id": "653b30efdbccbddcbbddb609",
     "name": "2nd rule",
     "type": "rule",
     "period": "ALL_TIME",
@@ -42,6 +44,7 @@
     "active": true
   },
   {
+    "id": "653b3112dbccbddcbbddb60a",
     "name": "3rd rule",
     "type": "rule",
     "period": "ALL_TIME",

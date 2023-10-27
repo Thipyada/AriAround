@@ -6,8 +6,8 @@ import { Status } from '@prisma/client'
 
 export const organizationSchema = z.object({
   name: z.string(),
-  Instagram: z.string().optional(),
-  Facebook: z.string().optional(),
+  instagram: z.string().optional(),
+  facebook: z.string().optional(),
   type: z.string(),
   status: z.nativeEnum(Status)
 })

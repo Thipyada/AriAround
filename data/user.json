@@ -1,10 +1,14 @@
 [
   {
-    "name": "test",
-    "organizationId": ""
+    "id": "653b3207ea73f8500059a8e2",
+    "name": "User 1",
+    "organizationId": "653b3150ea73f8500059a8dd",
+    "earnruleIds": ["653b30d3dbccbddcbbddb608", "653b30efdbccbddcbbddb609"]
   },
   {
-    "name": "Sara",
-    "organizationId": ""
+    "id": "653b3223ea73f8500059a8e3",
+    "name": "User 2",
+    "organizationId": "653b3150ea73f8500059a8dd",
+    "earnruleIds": ["653b30efdbccbddcbbddb609", "653b3112dbccbddcbbddb60a"]
   }
 ]
