@@ -3,8 +3,7 @@
     "name": "Admin",
     "profilePic": "url",
     "phone": "081-xxx-xxxx",
-    "email": "email",
-    "adminId": "adminId",
+    "email": "email@gmail.com",
     "permissions": [
       {
         "feature": "รายงาน",

@@ -3,12 +3,12 @@ import { json, urlencoded } from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
 
-import userRouter from './routes/user.router'
-import organizationRouter from './routes/organization.router'
-import adminRouter from './routes/admin.router'
-import earnRuleRouter from './routes/earnrule.router'
-import communityRouter from './routes/community.router'
-import shopRouter from './routes/shop.router'
+import userRouter from './module/user/user.router'
+import organizationRouter from './module/organization/organization.router'
+import adminRouter from './module/admin/admin.router'
+import earnRuleRouter from './module/earn-rule/earnrule.router'
+import communityRouter from './module/community/community.router'
+import shopRouter from './module/shop/shop.router'
 
 const PORT = 8080
 
@@ -21,8 +21,6 @@ app.use(json())
 app.use(cors())
 
 // http://localhost:8080/test
-
-//middleware
 
 //Routes
 app.use('/api/shop', shopRouter)

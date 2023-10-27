@@ -1,11 +1,11 @@
 [
   {
-    "name": "rule",
-    "type": "person",
+    "name": "1st rule",
+    "type": "rule",
     "period": "ALL_TIME",
-    "startDate": "2019-01-01",
-    "endDate": "2019-12-31",
-    "nextUpdateEarnrule": "2023-10-12T00:00:00.000Z",
+    "startDate": "2023-10-12T00:00:00.000Z",
+    "endDate": "2024-10-12T00:00:00.000Z",
+    "nextUpdateEarnrule": "2023-10-13T00:00:00.000Z",
     "picture": "picture",
     "frequency": {
       "right": 3,
@@ -21,16 +21,16 @@
     "active": true
   },
   {
-    "name": "test",
-    "type": "person",
+    "name": "2nd rule",
+    "type": "rule",
     "period": "ALL_TIME",
-    "startDate": "2019-01-01",
-    "endDate": "2019-12-31",
-    "nextUpdateEarnrule": "2023-10-18T00:00:00.000Z",
+    "startDate": "2023-10-12T00:00:00.000Z",
+    "endDate": "2024-10-12T00:00:00.000Z",
+    "nextUpdateEarnrule": "2023-10-13T00:00:00.000Z",
     "picture": "picture",
     "frequency": {
-      "right": 10,
-      "frequency": "WEEKLY"
+      "right": 5,
+      "frequency": "DAILY"
     },
     "setting": {
       "resultType": "FIXED",
@@ -42,16 +42,16 @@
     "active": true
   },
   {
-    "name": "John",
-    "type": "person",
+    "name": "3rd rule",
+    "type": "rule",
     "period": "ALL_TIME",
-    "startDate": "2019-01-01",
-    "endDate": "2019-12-31",
-    "nextUpdateEarnrule": "2023-11-11T00:00:00.000Z",
+    "startDate": "2023-10-12T00:00:00.000Z",
+    "endDate": "2024-10-12T00:00:00.000Z",
+    "nextUpdateEarnrule": "2023-10-13T00:00:00.000Z",
     "picture": "picture",
     "frequency": {
-      "right": 15,
-      "frequency": "MONTHLY"
+      "right": 10,
+      "frequency": "WEEKLY"
     },
     "setting": {
       "resultType": "FIXED",

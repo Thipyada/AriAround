@@ -2,23 +2,17 @@
   {
     "thaiName": "อารีย์",
     "englighName": "Ari",
-    "founded": "20/12/2022",
-    "updated": "20/09/2023",
     "active": true,
     "description": "Ari Around",
     "owner": "Ari Around",
-    "earnruleIds": ["651b62fa9598e954c1d4cb12", "651b63119598e954c1d4cb13"],
-    "communityId": "651ccd400f1090ea2cbc06b2"
+    "earnruleIds": ["651b62fa9598e954c1d4cb12", "651b63119598e954c1d4cb13"]
   },
   {
     "thaiName": "อ่อนนุช",
     "englighName": "Onnut",
-    "founded": "20/12/2022",
-    "updated": "20/09/2023",
     "active": true,
     "description": "Ari Around",
     "owner": "Ari Around",
-    "earnruleIds": ["651b62fa9598e954c1d4cb12", "651b63119598e954c1d4cb13"],
-    "communityId": "6524839b51a40248f423626c"
+    "earnruleIds": ["651b62fa9598e954c1d4cb12", "651b63119598e954c1d4cb13"]
   }
 ]
